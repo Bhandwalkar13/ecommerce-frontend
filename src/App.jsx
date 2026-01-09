@@ -299,34 +299,39 @@ function App() {
     setCurrentView('products');
   };
 
-  const addToCart = async (product, variant = null) => {
-    if (!user) {
-      showToast("Please login!", 'error');
-      setShowAuthForm(true);
-      return;
+  const addToCart = async (product) => {
+  if (!token) {
+    alert('Please login first');
+    return;
+  }
+
+  try {
+    const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/cart/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        product_id: product.id,
+        quantity: 1
+      })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Reload cart from backend
+      loadCartFromBackend(token);
+      alert('Added to cart!');
+    } else {
+      alert('Failed to add to cart');
     }
-    
-    try {
-      const body = { product_id: product.id, quantity: 1 };
-      if (variant) body.variant_id = variant.id;
-      
-      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/cart/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
-        },
-        body: JSON.stringify(body)
-      });
-      
-      if (response.ok) {
-        await loadCartFromBackend(user.token);
-        showToast('Added to cart!', 'success');
-      }
-    } catch (err) {
-      showToast('Failed to add', 'error');
-    }
-  };
+  } catch (err) {
+    console.error('Error adding to cart:', err);
+    alert('Error adding to cart');
+  }
+};
+
 
   const updateQuantityOnBackend = async (cartItemId, newQuantity) => {
     if (!user) return;
