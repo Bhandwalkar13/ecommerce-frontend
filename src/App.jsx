@@ -300,10 +300,40 @@ function App() {
   };
 
   const addToCart = async (product) => {
+  const token = localStorage.getItem('token');
+  
   if (!token) {
     alert('Please login first');
+    setShowAuthForm(true);
     return;
   }
+
+  try {
+    const response = await fetch(`${API_URL}/api/cart/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        product_id: product.id,
+        quantity: 1
+      })
+    });
+
+    if (response.ok) {
+      await loadCartFromBackend(token);
+      showToast('Added to cart!', 'success');
+    } else {
+      const error = await response.json();
+      showToast(error.error || 'Failed to add to cart', 'error');
+    }
+  } catch (err) {
+    console.error('Error adding to cart:', err);
+    showToast('Error adding to cart', 'error');
+  }
+};
+
 
   try {
     const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/cart/', {
