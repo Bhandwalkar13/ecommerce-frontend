@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+const API_URL = 'https://ecommerce-backend-6i5c.onrender.com';
+
 
 function App() {
   // State Management
@@ -108,7 +110,7 @@ function App() {
 
   const loadProducts = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/products/');
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/products/');
       const data = await response.json();
       setProducts(data);
       setLoading(false);
@@ -130,7 +132,7 @@ function App() {
 
   const loadCartFromBackend = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/cart/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/cart/', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -144,7 +146,7 @@ function App() {
 
   const loadOrdersFromBackend = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/orders/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/orders/', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -158,7 +160,7 @@ function App() {
 
   const loadWishlistFromBackend = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/wishlist/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/wishlist/', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -172,7 +174,7 @@ function App() {
 
   const loadNotifications = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/notifications/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/notifications/', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -186,7 +188,7 @@ function App() {
 
   const loadRecentlyViewed = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/recently-viewed/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/recently-viewed/', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -200,7 +202,7 @@ function App() {
 
   const loadCoupons = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/coupons/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/coupons/', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -214,7 +216,7 @@ function App() {
 
   const loadLikedProducts = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/likes/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/likes/', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -228,7 +230,7 @@ function App() {
 
   const loadReviewsForProduct = async (productId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/reviews/?product_id=${productId}`);
+      const response = await fetch(`https://ecommerce-backend-6i5c.onrender.com/api/reviews/?product_id=${productId}`);
       if (response.ok) {
         const data = await response.json();
         setReviews(prev => ({ ...prev, [productId]: data }));
@@ -242,7 +244,7 @@ function App() {
     e.preventDefault();
     setAuthError("");
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/login/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -269,7 +271,7 @@ function App() {
     e.preventDefault();
     setAuthError("");
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/register/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password })
@@ -308,7 +310,7 @@ function App() {
       const body = { product_id: product.id, quantity: 1 };
       if (variant) body.variant_id = variant.id;
       
-      const response = await fetch('http://127.0.0.1:8000/api/cart/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/cart/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -330,7 +332,7 @@ function App() {
     if (!user) return;
     try {
       if (newQuantity > 0) {
-        await fetch(`http://127.0.0.1:8000/api/cart/${cartItemId}/update_quantity/`, {
+        await fetch(`https://ecommerce-backend-6i5c.onrender.com/api/cart/${cartItemId}/update_quantity/`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -339,7 +341,7 @@ function App() {
           body: JSON.stringify({ quantity: newQuantity })
         });
       } else {
-        await fetch(`http://127.0.0.1:8000/api/cart/${cartItemId}/`, {
+        await fetch(`https://ecommerce-backend-6i5c.onrender.com/api/cart/${cartItemId}/`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${user.token}` }
         });
@@ -353,7 +355,7 @@ function App() {
   const removeFromCart = async (cartItemId) => {
     if (!user) return;
     try {
-      await fetch(`http://127.0.0.1:8000/api/cart/${cartItemId}/`, {
+      await fetch(`https://ecommerce-backend-6i5c.onrender.com/api/cart/${cartItemId}/`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
@@ -374,7 +376,7 @@ function App() {
     }
     
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/coupons/validate/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/coupons/validate/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -426,7 +428,7 @@ function App() {
       
       if (appliedCoupon) body.coupon_id = appliedCoupon.coupon_id;
       
-      const response = await fetch('http://127.0.0.1:8000/api/orders/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/orders/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -463,7 +465,7 @@ function App() {
 
     try {
       if (isInWishlist(product.id)) {
-        await fetch('http://127.0.0.1:8000/api/wishlist/remove_by_product/', {
+        await fetch('https://ecommerce-backend-6i5c.onrender.com/api/wishlist/remove_by_product/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -474,7 +476,7 @@ function App() {
         setWishlist(wishlist.filter(item => item.id !== product.id));
         showToast('Removed', 'info');
       } else {
-        await fetch('http://127.0.0.1:8000/api/wishlist/', {
+        await fetch('https://ecommerce-backend-6i5c.onrender.com/api/wishlist/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -498,7 +500,7 @@ function App() {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/likes/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/likes/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -546,7 +548,7 @@ function App() {
     if (!user || !selectedProduct) return;
     
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/reviews/', {
+      const response = await fetch('https://ecommerce-backend-6i5c.onrender.com/api/reviews/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -575,7 +577,7 @@ function App() {
 
   const markNotificationRead = async (notificationId) => {
     try {
-      await fetch(`http://127.0.0.1:8000/api/notifications/${notificationId}/mark_read/`, {
+      await fetch(`https://ecommerce-backend-6i5c.onrender.com/api/notifications/${notificationId}/mark_read/`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
